@@ -227,7 +227,7 @@ function ViewUsers() {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-      setUsers(users.filter((user) => user._id !== userId));
+      setUsers(users.filter((user) => user.id !== userId));
       showToast.success("User deleted successfully");
       if (currentUsers.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
@@ -462,7 +462,7 @@ function ViewUsers() {
               <tbody>
                 {currentUsers.map((user) => (
                   <tr
-                    key={user._id}
+                    key={user.id}
                     className={!user.isActive ? "inactive-user" : ""}
                   >
                     <td>{user.name || "N/A"}</td>
@@ -505,7 +505,7 @@ function ViewUsers() {
                         </button>
                         <button
                           className="btn btn-sm btn-danger action-btn"
-                          onClick={() => handleDelete(user._id)}
+                          onClick={() => handleDelete(user.id)}
                           title="Delete user"
                         >
                           Delete
@@ -577,7 +577,7 @@ function ViewUsers() {
                   <strong>Role:</strong> {selectedUser.role}
                 </p>
                 <p>
-                  <strong>User ID:</strong> {selectedUser._id}
+                  <strong>User ID:</strong> {selectedUser.id}
                 </p>
                 <p>
                   <strong>Created:</strong> {formatDate(selectedUser.createdAt)}

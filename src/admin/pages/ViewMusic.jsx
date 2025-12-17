@@ -84,10 +84,10 @@ function ViewMusic() {
     const statuses = {};
     for (const music of musicList) {
       if (music.fileUrl) {
-        statuses[music._id] = await checkFileStatus(music.fileUrl);
+        statuses[music.id] = await checkFileStatus(music.fileUrl);
       }
       if (music.thumbnailUrl) {
-        statuses[`${music._id}_thumb`] = await checkFileStatus(music.thumbnailUrl);
+        statuses[`${music.id}_thumb`] = await checkFileStatus(music.thumbnailUrl);
       }
     }
     setFileStatus(statuses);
@@ -116,7 +116,7 @@ function ViewMusic() {
       console.log(
         'Music data:',
         musicRes.data.map(m => ({
-          id: m._id,
+          id: m.id,
           title: m.title,
           releaseDate: m.releaseDate,
           createdAt: m.createdAt,
@@ -134,14 +134,14 @@ function ViewMusic() {
       if (missingReleaseDates.length > 0) {
         console.warn(
           'Missing or invalid releaseDate for items:',
-          missingReleaseDates.map(m => ({ id: m._id, title: m.title }))
+          missingReleaseDates.map(m => ({ id: m.id, title: m.title }))
         );
         showToast.warning(`${missingReleaseDates.length} music items lack valid release dates, using createdAt`);
       }
       if (timeLessReleaseDates.length > 0) {
         console.warn(
           'releaseDate lacks time component for items:',
-          timeLessReleaseDates.map(m => ({ id: m._id, title: m.title, releaseDate: m.releaseDate }))
+          timeLessReleaseDates.map(m => ({ id: m.id, title: m.title, releaseDate: m.releaseDate }))
         );
         showToast.warning(`${timeLessReleaseDates.length} music items have date-only release dates, time precision may be lost`);
       }
@@ -404,7 +404,7 @@ function ViewMusic() {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-      setMusicList(musicList.filter(music => music._id !== id));
+      setMusicList(musicList.filter(music => music.id !== id));
       setThumbnailLoading(prev => {
         const newLoading = { ...prev };
         delete newLoading[id];
@@ -421,11 +421,11 @@ function ViewMusic() {
   };
 
   const handleEdit = (music) => {
-    setEditingId(music._id);
+    setEditingId(music.id);
     setEditTitle(music.title);
     setEditArtist(music.artist);
-    setEditCategory(music.category?._id || '');
-    setEditCategoryType(music.categoryType?._id || '');
+    setEditCategory(music.category?.id || '');
+    setEditCategoryType(music.categoryType?.id || '');
     setEditDescription(music.description || '');
     setEditThumbnail(null);
     setThumbnailLoading(prev => ({ ...prev, [music._id]: !loadedImagesRef.current.has(music._id) }));

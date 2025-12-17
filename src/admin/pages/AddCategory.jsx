@@ -86,7 +86,7 @@ function AddCategory() {
       // Redirect to ViewCategories with query params including the new category ID
       setTimeout(() => {
         navigate(
-          `/admin/view-categories?newCategory=true&categoryId=${res.data._id}`,
+          `/admin/view-categories?newCategory=true&categoryId=${res.data.id}`,
         );
       }, 1000);
     } catch (err) {

@@ -58,7 +58,7 @@ function ManageTermsConditions() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       const url = editingTerms
-        ? `${apiUrl}/terms/admin/${editingTerms._id}`
+        ? `${apiUrl}/terms/admin/${editingTerms.id}`
         : `${apiUrl}/terms/admin`;
 
       const method = editingTerms ? "PUT" : "POST";
@@ -225,7 +225,6 @@ function ManageTermsConditions() {
         </button>
       </div>
 
-      {/* Create/Edit Form */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content large">
@@ -314,7 +313,6 @@ function ManageTermsConditions() {
         </div>
       )}
 
-      {/* Preview Modal */}
       {showPreview && (
         <div className="modal-overlay">
           <div className="modal-content large">
@@ -350,11 +348,10 @@ function ManageTermsConditions() {
         </div>
       )}
 
-      {/* Terms List */}
       <div className="terms-list">
         {terms.map((termsItem) => (
           <div
-            key={termsItem._id}
+            key={termsItem.id}
             className={`terms-card ${termsItem.isActive ? "active" : ""}`}
           >
             <div className="terms-header">
@@ -419,13 +416,13 @@ function ManageTermsConditions() {
                   </button>
                   <button
                     className="btn btn-sm btn-success"
-                    onClick={() => handlePublish(termsItem._id)}
+                    onClick={() => handlePublish(termsItem.id)}
                   >
                     Publish
                   </button>
                   <button
                     className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(termsItem._id)}
+                    onClick={() => handleDelete(termsItem.id)}
                   >
                     Delete
                   </button>
@@ -435,7 +432,7 @@ function ManageTermsConditions() {
               {termsItem.isActive && (
                 <button
                   className="btn btn-sm btn-warning"
-                  onClick={() => handleUnpublish(termsItem._id)}
+                  onClick={() => handleUnpublish(termsItem.id)}
                 >
                   Unpublish
                 </button>

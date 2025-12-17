@@ -88,7 +88,7 @@ function ManageSubscriptionPlans() {
         import.meta.env.VITE_API_URL ||
         "https://elevate-backend-s28.onrender.com";
       const url = editingPlan
-        ? `${apiUrl}/subscription-plans/admin/subscription-plans/${editingPlan._id}`
+        ? `${apiUrl}/subscription-plans/admin/subscription-plans/${editingPlan.id}`
         : `${apiUrl}/subscription-plans/admin/subscription-plans`;
 
       const method = editingPlan ? "PUT" : "POST";
@@ -514,7 +514,7 @@ function ManageSubscriptionPlans() {
       <div className="plans-grid">
         {plans.map((plan) => (
           <div
-            key={plan._id}
+            key={plan.id}
             className={`plan-card ${!plan.isActive ? "inactive" : ""}`}
           >
             <div className="plan-header">
@@ -578,14 +578,14 @@ function ManageSubscriptionPlans() {
               {plan.isActive ? (
                 <button
                   className="btn btn-sm btn-warning"
-                  onClick={() => handleDeactivate(plan._id)}
+                  onClick={() => handleDeactivate(plan.id)}
                 >
                   Deactivate
                 </button>
               ) : (
                 <button
                   className="btn btn-sm btn-success"
-                  onClick={() => handleActivate(plan._id)}
+                  onClick={() => handleActivate(plan.id)}
                 >
                   Activate
                 </button>
@@ -594,7 +594,7 @@ function ManageSubscriptionPlans() {
               {!plan.isDefault && (
                 <button
                   className="btn btn-sm btn-info"
-                  onClick={() => handleSetDefault(plan._id)}
+                  onClick={() => handleSetDefault(plan.id)}
                 >
                   Set Default
                 </button>

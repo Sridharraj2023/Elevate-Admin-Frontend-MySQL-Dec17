@@ -59,7 +59,7 @@ function ManageDisclaimer() {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       const url = editingDisclaimer
-        ? `${apiUrl}/terms/admin/${editingDisclaimer.id}`
+        ? `${apiUrl}/terms/admin/${editingDisclaimer._id}`
         : `${apiUrl}/terms/admin`;
 
       const method = editingDisclaimer ? "PUT" : "POST";
@@ -268,6 +268,7 @@ function ManageDisclaimer() {
         </button>
       </div>
 
+      {/* Create/Edit Form */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content large">
@@ -358,6 +359,7 @@ function ManageDisclaimer() {
         </div>
       )}
 
+      {/* Preview Modal */}
       {showPreview && (
         <div className="modal-overlay">
           <div className="modal-content large">
@@ -393,10 +395,11 @@ function ManageDisclaimer() {
         </div>
       )}
 
+      {/* Disclaimer List */}
       <div className="terms-list">
         {disclaimers.map((disclaimerItem) => (
           <div
-            key={disclaimerItem.id}
+            key={disclaimerItem._id}
             className={`terms-card ${disclaimerItem.isActive ? "active" : ""}`}
           >
             <div className="terms-header">
@@ -462,13 +465,13 @@ function ManageDisclaimer() {
                   </button>
                   <button
                     className="btn btn-sm btn-success"
-                    onClick={() => handlePublish(disclaimerItem.id)}
+                    onClick={() => handlePublish(disclaimerItem._id)}
                   >
                     Publish
                   </button>
                   <button
                     className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(disclaimerItem.id)}
+                    onClick={() => handleDelete(disclaimerItem._id)}
                   >
                     Delete
                   </button>
@@ -478,7 +481,7 @@ function ManageDisclaimer() {
               {disclaimerItem.isActive && (
                 <button
                   className="btn btn-sm btn-warning"
-                  onClick={() => handleUnpublish(disclaimerItem.id)}
+                  onClick={() => handleUnpublish(disclaimerItem._id)}
                 >
                   Unpublish
                 </button>

@@ -36,9 +36,9 @@ function AddMusic() {
         );
         setCategories(res.data);
         if (res.data.length > 0) {
-          setCategory(res.data[0]._id);
+          setCategory(res.data[0].id);
           if (res.data[0].types.length > 0) {
-            setCategoryType(res.data[0].types[0]._id);
+            setCategoryType(res.data[0].types[0].id);
           } else {
             setCategoryType("");
           }
@@ -121,9 +121,9 @@ function AddMusic() {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setCategory(newCategory);
-    const selectedCategory = categories.find((cat) => cat._id === newCategory);
+    const selectedCategory = categories.find((cat) => cat.id === newCategory);
     if (selectedCategory && selectedCategory.types.length > 0) {
-      setCategoryType(selectedCategory.types[0]._id);
+      setCategoryType(selectedCategory.types[0].id);
     } else {
       setCategoryType("");
     }
@@ -147,7 +147,7 @@ function AddMusic() {
       hasError = true;
     }
     if (!categoryType) {
-      const selectedCategory = categories.find((cat) => cat._id === category);
+      const selectedCategory = categories.find((cat) => cat.id === category);
       if (selectedCategory && selectedCategory.types.length > 0) {
         showToast.error("Category type is required");
         hasError = true;
@@ -232,14 +232,14 @@ function AddMusic() {
       setUploadProgress(0);
       setReleaseDate(new Date().toISOString().split("T")[0]);
       if (categories.length > 0) {
-        setCategory(categories[0]._id);
+        setCategory(categories[0].id);
         setCategoryType(
-          categories[0].types.length > 0 ? categories[0].types[0]._id : "",
+          categories[0].types.length > 0 ? categories[0].types[0].id : "",
         );
       }
 
       setTimeout(() => {
-        navigate(`/admin/view-music?newMusicId=${res.data._id}`);
+        navigate(`/admin/view-music?newMusicId=${res.data.id}`);
       }, 1000);
     } catch (err) {
       setIsUploading(false);
@@ -280,7 +280,7 @@ function AddMusic() {
     }
   };
 
-  const selectedCategory = categories.find((cat) => cat._id === category) || {
+  const selectedCategory = categories.find((cat) => cat.id === category) || {
     types: [],
   };
 
@@ -344,7 +344,7 @@ function AddMusic() {
               <option value="">No categories available</option>
             ) : (
               categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
+                <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
               ))
@@ -365,7 +365,7 @@ function AddMusic() {
               <option value="">No types available</option>
             ) : (
               selectedCategory.types.map((type) => (
-                <option key={type._id} value={type._id}>
+                <option key={type.id} value={type.id}>
                   {type.name}
                 </option>
               ))
