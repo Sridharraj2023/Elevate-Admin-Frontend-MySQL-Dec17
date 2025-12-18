@@ -61,7 +61,8 @@ function ViewCategories() {
         if (category.description?.toLowerCase().includes(lowerQuery)) {
           suggestionSet.add(`Description: ${category.description}`);
         }
-        category.types.forEach((type) => {
+        const types = Array.isArray(category.types) ? category.types : [];
+        types.forEach((type) => {
           if (type.name.toLowerCase().includes(lowerQuery)) {
             suggestionSet.add(`Type: ${type.name}`);
           }
@@ -137,7 +138,7 @@ function ViewCategories() {
     return (
       category.name.toLowerCase().includes(lowerQuery) ||
       category.description?.toLowerCase().includes(lowerQuery) ||
-      category.types.some((type) =>
+Array.isArray(category.types) && category.types.some((type) =>
         type.name.toLowerCase().includes(lowerQuery),
       )
     );
@@ -173,7 +174,7 @@ function ViewCategories() {
 
     if (newCategory && categoryId && categories.length > 0) {
       const categoryIndex = sortedCategories.findIndex(
-        (cat) => cat._id === categoryId,
+        (cat) => cat.id === categoryId,
       );
       if (categoryIndex !== -1) {
         const targetPage = Math.floor(categoryIndex / categoriesPerPage) + 1;
@@ -221,7 +222,7 @@ function ViewCategories() {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
-      setCategories(categories.filter((cat) => cat._id !== id));
+      setCategories(categories.filter((cat) => cat.id !== id));
       showToast.success("Category deleted successfully!");
       if (currentCategories.length === 1 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
@@ -234,10 +235,10 @@ function ViewCategories() {
   };
 
   const handleEdit = (category) => {
-    setEditingId(category._id);
+    setEditingId(category.id);
     setEditName(category.name);
     setEditDescription(category.description || "");
-    setEditTypes([...category.types]);
+    setEditTypes(Array.isArray(category.types) ? [...category.types] : []);
   };
 
   const handleUpdate = async (id) => {
@@ -278,7 +279,7 @@ function ViewCategories() {
           withCredentials: true,
         },
       );
-      setCategories(categories.map((cat) => (cat._id === id ? res.data : cat)));
+      setCategories(categories.map((cat) => (cat.id === id ? res.data : cat)));
       setEditingId(null);
       showToast.success("Category updated successfully!");
     } catch (err) {
@@ -328,7 +329,7 @@ function ViewCategories() {
           },
         );
         setCategories(
-          categories.map((cat) => (cat._id === categoryId ? res.data : cat)),
+          categories.map((cat) => (cat.id === categoryId ? res.data : cat)),
         );
         setEditTypes(editTypes.filter((_, i) => i !== index));
       } catch (err) {
@@ -411,8 +412,8 @@ function ViewCategories() {
             </thead>
             <tbody>
               {currentCategories.map((category) => (
-                <tr key={category._id} data-category-id={category._id}>
-                  {editingId === category._id ? (
+                <tr key={category.id} data-category-id={category.id}>
+                  {editingId === category.id ? (
                     <>
                       <td>
                         <input
@@ -437,7 +438,7 @@ function ViewCategories() {
                       <td>
                         {editTypes.map((type, index) => (
                           <div
-                            key={type._id || index}
+                            key={type.id || index}
                             className="type-input-group"
                             style={{ marginBottom: "10px" }}
                           >
@@ -469,7 +470,7 @@ function ViewCategories() {
                             <button
                               className="btn btn-danger"
                               onClick={() =>
-                                removeType(category._id, type._id, index)
+                                removeType(category.id, type.id, index)
                               }
                               style={{ marginTop: "5px" }}
                             >
@@ -492,7 +493,7 @@ function ViewCategories() {
                         >
                           <button
                             className="btn btn-success"
-                            onClick={() => handleUpdate(category._id)}
+                            onClick={() => handleUpdate(category.id)}
                           >
                             Update
                           </button>
@@ -510,10 +511,10 @@ function ViewCategories() {
                       <td>{category.name}</td>
                       <td>{category.description}</td>
                       <td>
-                        {category.types.length > 0 ? (
+                        {Array.isArray(category.types) && category.types.length > 0 ? (
                           <ul>
                             {category.types.map((type) => (
-                              <li key={type._id}>
+                              <li key={type.id}>
                                 {type.name} -{" "}
                                 {type.description || "No description"}
                               </li>
@@ -536,7 +537,7 @@ function ViewCategories() {
                           </button>
                           <button
                             className="btn btn-danger"
-                            onClick={() => handleDelete(category._id)}
+                            onClick={() => handleDelete(category.id)}
                           >
                             Delete
                           </button>

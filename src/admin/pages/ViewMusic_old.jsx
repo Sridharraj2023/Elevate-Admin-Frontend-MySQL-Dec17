@@ -343,7 +343,7 @@ function ViewMusic() {
     console.log(
       'sortedMusic order:',
       sortedMusic.map(m => ({
-        id: m.id,
+        id: m._id,
         title: m.title,
         releaseDate: m.releaseDate,
         createdAt: m.createdAt,
@@ -369,7 +369,7 @@ function ViewMusic() {
     const query = new URLSearchParams(location.search);
     const newMusicId = query.get('newMusicId');
     if (newMusicId && musicList.length > 0 && sortOption !== 'newest') {
-      const musicIndex = sortedMusic.findIndex(music => music.id === newMusicId);
+      const musicIndex = sortedMusic.findIndex(music => music._id === newMusicId);
       if (musicIndex !== -1) {
         const targetPage = Math.floor(musicIndex / musicPerPage) + 1;
         setCurrentPage(targetPage);
@@ -428,7 +428,7 @@ function ViewMusic() {
     setEditCategoryType(music.categoryType?.id || '');
     setEditDescription(music.description || '');
     setEditThumbnail(null);
-    setThumbnailLoading(prev => ({ ...prev, [music.id]: !loadedImagesRef.current.has(music.id) }));
+    setThumbnailLoading(prev => ({ ...prev, [music._id]: !loadedImagesRef.current.has(music._id) }));
   };
 
   const handleUpdate = async (id) => {
@@ -493,9 +493,9 @@ function ViewMusic() {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setEditCategory(newCategory);
-    const selectedCategory = categories.find(cat => cat.id === newCategory);
+    const selectedCategory = categories.find(cat => cat._id === newCategory);
     if (selectedCategory && selectedCategory.types.length > 0) {
-      setEditCategoryType(selectedCategory.types[0].id);
+      setEditCategoryType(selectedCategory.types[0]._id);
     } else {
       setEditCategoryType('');
     }
@@ -569,7 +569,7 @@ const togglePlayPause = async (id) => {
 
   const placeholderImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAjWjB1QAAAABJRU5ErkJggg==';
 
-  const selectedCategory = categories.find(cat => cat.id === editCategory) || { types: [] };
+  const selectedCategory = categories.find(cat => cat._id === editCategory) || { types: [] };
 
   console.log('thumbnailLoading state:', thumbnailLoading);
 
@@ -669,21 +669,21 @@ const togglePlayPause = async (id) => {
               
               return (
               <div 
-                key={music.id} 
+                key={music._id} 
                 className="music-card"
-                data-music-id={music.id}
-                ref={(el) => (musicRefs.current[music.id] = el)}
+                data-music-id={music._id}
+                ref={(el) => (musicRefs.current[music._id] = el)}
               >
-                {editingId === music.id ? (
+                {editingId === music._id ? (
                   <div className="edit-form">
                     <div className="thumbnail-preview">
-                      <div className={`thumbnail-wrapper ${thumbnailLoading[music.id] ? 'shimmer' : ''}`}>
+                      <div className={`thumbnail-wrapper ${thumbnailLoading[music._id] ? 'shimmer' : ''}`}>
                         <img
                           src={editThumbnailUrl || sanitizedThumbnailUrl}
                           alt="Thumbnail preview"
                           className="music-thumbnail"
-                          onLoad={() => handleThumbnailLoad(music.id)}
-                          onError={(e) => handleThumbnailError(music.id, e, src => e.target.src = src)}
+                          onLoad={() => handleThumbnailLoad(music._id)}
+                          onError={(e) => handleThumbnailError(music._id, e, src => e.target.src = src)}
                         />
                       </div>
                     </div>
@@ -710,7 +710,7 @@ const togglePlayPause = async (id) => {
                         <option value="">No categories available</option>
                       ) : (
                         categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
+                          <option key={cat._id} value={cat._id}>
                             {cat.name}
                           </option>
                         ))
@@ -725,7 +725,7 @@ const togglePlayPause = async (id) => {
                         <option value="">No types available</option>
                       ) : (
                         selectedCategory.types.map((type) => (
-                          <option key={type.id} value={type.id}>
+                          <option key={type._id} value={type._id}>
                             {type.name}
                           </option>
                         ))
@@ -752,8 +752,8 @@ const togglePlayPause = async (id) => {
                               URL.revokeObjectURL(URL.createObjectURL(editThumbnail));
                             }
                             setEditThumbnail(e.target.files[0]);
-                            setThumbnailLoading(prev => ({ ...prev, [music.id]: true }));
-                            loadedImagesRef.current.delete(music.id);
+                            setThumbnailLoading(prev => ({ ...prev, [music._id]: true }));
+                            loadedImagesRef.current.delete(music._id);
                           }}
                         />
                       </div>
@@ -770,12 +770,12 @@ const togglePlayPause = async (id) => {
                       </div>
                     </div>
                     <div className="edit-buttons">
-                      <button onClick={() => handleUpdate(music.id)}>Update</button>
+                      <button onClick={() => handleUpdate(music._id)}>Update</button>
                       <button onClick={() => {
                         setEditingId(null);
                         setEditThumbnail(null);
                         setEditAudio(null);
-                        setThumbnailLoading(prev => ({ ...prev, [music.id]: !loadedImagesRef.current.has(music.id) }));
+                        setThumbnailLoading(prev => ({ ...prev, [music._id]: !loadedImagesRef.current.has(music._id) }));
                         if (editThumbnail) {
                           URL.revokeObjectURL(URL.createObjectURL(editThumbnail));
                         }
@@ -786,13 +786,13 @@ const togglePlayPause = async (id) => {
                   </div>
                 ) : (
                   <>
-                    <div className={`thumbnail-wrapper ${thumbnailLoading[music.id] ? 'shimmer' : ''}`}>
+                    <div className={`thumbnail-wrapper ${thumbnailLoading[music._id] ? 'shimmer' : ''}`}>
                       <img
                         src={sanitizedThumbnailUrl}
                         alt={music.title}
                         className="music-thumbnail"
-                        onLoad={() => handleThumbnailLoad(music.id)}
-                        onError={(e) => handleThumbnailError(music.id, e, src => e.target.src = src)}
+                        onLoad={() => handleThumbnailLoad(music._id)}
+                        onError={(e) => handleThumbnailError(music._id, e, src => e.target.src = src)}
                       />
                     </div>
                     <h3>{music.title}</h3>
@@ -810,39 +810,39 @@ const togglePlayPause = async (id) => {
                     {/* File Status Indicators */}
                     <div className="file-status-indicators">
                       {music.fileUrl && (
-                        <span className={`status-badge ${fileStatus[music.id] === 'exists' ? 'exists' : 'missing'}`}>
-                          Audio: {fileStatus[music.id] === 'exists' ? 'Exists' : 'Missing'}
+                        <span className={`status-badge ${fileStatus[music._id] === 'exists' ? 'exists' : 'missing'}`}>
+                          Audio: {fileStatus[music._id] === 'exists' ? 'Exists' : 'Missing'}
                         </span>
                       )}
                       {music.thumbnailUrl && (
-                        <span className={`status-badge ${fileStatus[`${music.id}_thumb`] === 'exists' ? 'exists' : 'missing'}`}>
-                          Image: {fileStatus[`${music.id}_thumb`] === 'exists' ? 'Exists' : 'Missing'}
+                        <span className={`status-badge ${fileStatus[`${music._id}_thumb`] === 'exists' ? 'exists' : 'missing'}`}>
+                          Image: {fileStatus[`${music._id}_thumb`] === 'exists' ? 'Exists' : 'Missing'}
                         </span>
                       )}
                     </div>
                     <div className="custom-player">
                       <button
                         className="play-pause-btn"
-                        onClick={() => togglePlayPause(music.id)}
+                        onClick={() => togglePlayPause(music._id)}
                         disabled={!music.fileUrl}
                       >
-                        {playingId === music.id ? <FaPause /> : <FaPlay />}
+                        {playingId === music._id ? <FaPause /> : <FaPlay />}
                       </button>
                       <span className="time-display">
-                        {formatTime(currentTimes[music.id])} / {formatTime(durations[music.id])}
+                        {formatTime(currentTimes[music._id])} / {formatTime(durations[music._id])}
                       </span>
                       <input
                         type="range"
                         min="0"
-                        max={durations[music.id] || 0}
-                        value={currentTimes[music.id] || 0}
+                        max={durations[music._id] || 0}
+                        value={currentTimes[music._id] || 0}
                         onChange={(e) => {
-                          const audio = audioRefs.current[music.id];
+                          const audio = audioRefs.current[music._id];
                           if (audio) {
                             audio.currentTime = e.target.value;
                             setCurrentTimes(prev => ({ 
                               ...prev, 
-                              [music.id]: parseFloat(e.target.value) 
+                              [music._id]: parseFloat(e.target.value) 
                             }));
                           }
                         }}
@@ -851,9 +851,9 @@ const togglePlayPause = async (id) => {
                       />
                       {music.fileUrl ? (
                         <audio
-                          ref={(el) => (audioRefs.current[music.id] = el)}
-                          onTimeUpdate={() => handleTimeUpdate(music.id)}
-                          onLoadedMetadata={() => handleLoadedMetadata(music.id)}
+                          ref={(el) => (audioRefs.current[music._id] = el)}
+                          onTimeUpdate={() => handleTimeUpdate(music._id)}
+                          onLoadedMetadata={() => handleLoadedMetadata(music._id)}
                           onError={(e) => console.log('Audio failed:', toProd(music.fileUrl), e)}
                         >
                           <source src={toProd(music.fileUrl)} type="audio/mpeg" />
@@ -865,7 +865,7 @@ const togglePlayPause = async (id) => {
                     </div>
                     <div className="action-buttons">
                       <button onClick={() => handleEdit(music)}>Update</button>
-                      <button onClick={() => handleDelete(music.id)}>Delete</button>
+                      <button onClick={() => handleDelete(music._id)}>Delete</button>
                     </div>
                   </>
                 )}

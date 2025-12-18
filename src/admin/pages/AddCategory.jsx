@@ -126,11 +126,7 @@ function AddCategory() {
         <div className="form-group">
           <label className="form-label">Category Types:</label>
           {types.map((type, index) => (
-            <div
-              key={index}
-              className="type-input-group"
-              style={{ marginBottom: "15px" }}
-            >
+            <div key={index} className="type-input-group">
               <input
                 className="form-control"
                 type="text"
@@ -156,7 +152,6 @@ function AddCategory() {
                   type="button"
                   className="btn btn-danger"
                   onClick={() => removeType(index)}
-                  style={{ marginTop: "5px" }}
                 >
                   Remove Type
                 </button>
@@ -167,7 +162,6 @@ function AddCategory() {
             type="button"
             className="btn btn-secondary"
             onClick={addType}
-            style={{ marginTop: "10px" }}
           >
             Add Another Type
           </button>

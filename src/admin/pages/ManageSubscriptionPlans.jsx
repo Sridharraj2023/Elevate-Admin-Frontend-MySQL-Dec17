@@ -530,9 +530,9 @@ function ManageSubscriptionPlans() {
             </div>
 
             <div className="plan-pricing">
-              <div className="price">${plan.monthlyCost.toFixed(2)}/month</div>
+              <div className="price">${parseFloat(plan.monthlyCost).toFixed(2)}/month</div>
               <div className="price-annual">
-                ${plan.annualCost.toFixed(2)}/year
+                ${parseFloat(plan.annualCost).toFixed(2)}/year
               </div>
             </div>
 
