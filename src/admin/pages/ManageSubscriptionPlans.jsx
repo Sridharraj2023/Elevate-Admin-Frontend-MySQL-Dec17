@@ -342,11 +342,11 @@ function ManageSubscriptionPlans() {
 
               <div className="form-section-title">
                 <h4>
-                  Stripe Price IDs (Optional - Auto-generated if left empty)
+                   Auto-Sync with Stripe
                 </h4>
                 <small>
-                  If you already created prices in Stripe, enter them here.
-                  Otherwise, they will be created automatically.
+                  When you change Monthly/Annual costs, new Stripe Price IDs are automatically created and synced.
+                  No need to manually manage Stripe prices!
                 </small>
               </div>
 
