@@ -121,8 +121,8 @@ function AddMusic() {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setCategory(newCategory);
-    const selectedCategory = categories.find((cat) => cat.id === newCategory);
-    if (selectedCategory && selectedCategory.types.length > 0) {
+    const selectedCategory = categories.find((cat) => cat.id == newCategory);
+    if (selectedCategory && selectedCategory.types && selectedCategory.types.length > 0) {
       setCategoryType(selectedCategory.types[0].id);
     } else {
       setCategoryType("");
@@ -280,7 +280,7 @@ function AddMusic() {
     }
   };
 
-  const selectedCategory = categories.find((cat) => cat.id === category) || {
+  const selectedCategory = categories.find((cat) => cat.id == category) || {
     types: [],
   };
 
