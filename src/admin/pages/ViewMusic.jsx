@@ -493,8 +493,8 @@ function ViewMusic() {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
     setEditCategory(newCategory);
-    const selectedCategory = categories.find(cat => cat.id === newCategory);
-    if (selectedCategory && selectedCategory.types.length > 0) {
+    const selectedCategory = categories.find(cat => cat.id == newCategory);
+    if (selectedCategory && selectedCategory.types && selectedCategory.types.length > 0) {
       setEditCategoryType(selectedCategory.types[0].id);
     } else {
       setEditCategoryType('');
@@ -569,7 +569,7 @@ const togglePlayPause = async (id) => {
 
   const placeholderImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAjWjB1QAAAABJRU5ErkJggg==';
 
-  const selectedCategory = categories.find(cat => cat.id === editCategory) || { types: [] };
+  const selectedCategory = categories.find(cat => cat.id == editCategory) || { types: [] };
 
   console.log('thumbnailLoading state:', thumbnailLoading);
 
